@@ -1,12 +1,13 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const connectDB = async () => {
-    try {
-        await mongoose.connect(`${process.env.PRODUCTION === "true" ? process.env.MONGODB_URI : "mongodb://localhost:27017/scholar"}`);
-    } catch (err) {
-        console.error(err.message);
-        process.exit(1);
+    try{
+       await mongoose.connect("mongodb://localhost:27017/MinistoreInstitute");
+       console.log(`MongoDB connected ${mongoose.connection.host}`);
+    }
+    catch(error) {
+        console.log(`mongoDB error ${error}`)
     }
 };
 
-module.exports = connectDB;
+export default connectDB;

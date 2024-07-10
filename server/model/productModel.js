@@ -1,28 +1,33 @@
 import mongoose from "mongoose";
-import { User } from "./userModel";
+import { User } from "./userModel.js";
 
-const productSchema = new mongoose({
+const { Schema } = mongoose;
+
+const productSchema = new Schema({
     title: {
         type: String,
-        reqduired: [true, "title must be provide"]
+        required: [true, "Title must be provided"]
     },
     price: {
         type: Number,
-        required: [true, "price must be provided"]
+        required: [true, "Price must be provided"]
     },
     category: {
         type: String,
-        required: [true, "category must be provided"]
+        required: [true, "Category must be provided"]
     },
     img: {
         type: String,
-        required: [true, "img must be provided"]
+        required: [true, "Image must be provided"]
     },
     createdBy: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User"
-    }]
-})
+    }],
+    date: {
+        type: Date,
+        default: Date.now
+    }
+});
 
-
-export const Product = mongoose.model("Product", productSchema)
+export const Product = mongoose.model("Product", productSchema);

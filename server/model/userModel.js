@@ -1,25 +1,27 @@
-import mongoose  from "mongoose";
-import { Product } from "./productModel";
-import { Blog } from "./blogModel";
+import mongoose from "mongoose";
+import { Product } from "./productModel.js";
+import { Blog } from "./blogModel.js";
 
-const userSchema = new mongoose({
+const { Schema } = mongoose;
+
+const userSchema = new Schema({
     email: {
         type: String,
-        required: [true, "email is required"]
+        required: [true, "Email is required"],
+        unique: true // Ensures uniqueness of email
     },
     password: {
         type: String,
-        required: [true, "password is required"],
-        unique: [true, "password must be unique"]
+        required: [true, "Password is required"]
     },
-    createdProduct: [{
-        type: mongoose.Schema.Types.ObjectId,
+    createdProducts: [{
+        type: Schema.Types.ObjectId,
         ref: "Product"
     }],
-    createdBlog: [{
-        type: mongoose.Schema.Types.ObjectId,
+    createdBlogs: [{
+        type: Schema.Types.ObjectId,
         ref: "Blog"
     }]
-})
+});
 
-export const User = mongoose.model("User", userSchema)
+export const User = mongoose.model("User", userSchema);
