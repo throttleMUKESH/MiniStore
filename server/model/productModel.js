@@ -1,33 +1,25 @@
-import mongoose from "mongoose";
-import { User } from "./userModel.js";
+// models/Product.js
+import mongoose from "mongoose"
 
-const { Schema } = mongoose;
-
-const productSchema = new Schema({
-    title: {
-        type: String,
-        required: [true, "Title must be provided"]
-    },
-    price: {
-        type: Number,
-        required: [true, "Price must be provided"]
-    },
-    category: {
-        type: String,
-        required: [true, "Category must be provided"]
-    },
-    img: {
-        type: String,
-        required: [true, "Image must be provided"]
-    },
-    createdBy: [{
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    }],
-    date: {
-        type: Date,
-        default: Date.now
-    }
+const productSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  img: {
+    type: String,
+    required: true,
+  },
 });
 
-export const Product = mongoose.model("Product", productSchema);
+export const Product = mongoose.model('Product', productSchema);
+
+

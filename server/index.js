@@ -1,13 +1,13 @@
-import express from "express";
-import cors from "cors";
-import dotenv from 'dotenv';
-import morgan from "morgan";
-import cookieParser from "cookie-parser";
-import cloudinary from "cloudinary";
-import userRoutes from "./routes/userRoutes.js";
-import blogRoute from "./routes/blogRoute.js";
-import productRoute from "./routes/productRoute.js";
-import connectDB from "./config/db.js";
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const cloudinary = require('cloudinary').v2;
+// const userRoutes = require('./routes/userRoutes.js');
+const blogRoute = require("./routes/blogRoute.js")
+// const productRoutes = require('./routes/productRoutes.js');
+const connectDB = require("./config/db.js")
 
 // Load environment variables
 dotenv.config();
@@ -15,12 +15,7 @@ dotenv.config();
 // Connect to MongoDB
 connectDB();
 
-// Configure Cloudinary
-cloudinary.v2.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_SECRET
-});
+dote
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -32,9 +27,9 @@ app.use(cors());
 app.use(cookieParser());
 
 // Routes
-app.use("/api/v1/user", userRoutes);
+// app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/blog", blogRoute);
-app.use("/api/v1/product", productRoute);
+// app.use("/api/v1/product", productRoute);
 
 // Test route
 app.get("/", (req, res) => {

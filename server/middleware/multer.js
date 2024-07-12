@@ -1,4 +1,4 @@
-import multer from "multer";
+const multer = require("multer");
 
 // Multer config
 const storage = multer.memoryStorage();

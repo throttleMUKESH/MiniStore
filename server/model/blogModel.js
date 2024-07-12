@@ -1,37 +1,24 @@
-import mongoose from 'mongoose';
-import { User } from './userModel.js';
+const mongoose = require('mongoose');
 
-const { Schema } = mongoose;
-
-const blogSchema = new Schema({
-    title: {
-        type: String,
-        required: [true, "Please provide a title"]
-    },
-    mainTitle: {
-        type: String,
-        required: [true, "Please provide a main title"]
-    },
-    img: [{
-        public_id: String,
-        url: String,
-    }],
-    content: {
-        type: String,
-        required: [true, "Please provide content"]
-    },
-    createdBy: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    }
-}, {
-    timestamps: true
+const blogSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  mainTitle: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  img: {
+    type: String,
+    required: true,
+  },
 });
 
-blogSchema.path('img').schema.eachPath((path, schemaType) => {
-    if (path === 'public_id' || path === 'url') {
-        schemaType.required(true, `Please provide an image ${path}`);
-    }
-});
+const Blog = mongoose.model('Blog', blogSchema);
 
-export const Blog = mongoose.model("Blog", blogSchema);
+module.exports = Blog;

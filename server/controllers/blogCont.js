@@ -1,97 +1,74 @@
-import cloudinary from "cloudinary";
-import { getDataUri } from '../utils/feature.js';
-import { Blog } from '../model/blogModel.js';
+const Blog = require("../model/blogModel.js")
 
-export const createBlogController = async (req, res) => {
-  const { title, mainTitle, content } = req.body;
-
+// Create a new blog post
+exports.createBlog = async (req, res) => {
   try {
-    // Validation
-    if (!title || !mainTitle || !content) {
-      return res.status(400).send({
-        success: false,
-        message: "Please provide all fields",
-      });
-    }
+    const { title, mainTitle, content } = req.body;
+    const img = req.file.path;
 
-    if (!req.file) {
-      return res.status(400).send({
-        success: false,
-        message: "Please provide product image",
-      });
-    }
+    const newBlog = new Blog({ title, mainTitle, content, img });
+    await newBlog.save();
 
-    // Convert file to Data URI
-    const fileDataUri = getDataUri(req.file);
-
-    // Upload image to Cloudinary
-    const cloudinaryUpload = await cloudinary.v2.uploader.upload(fileDataUri.content);
-
-    // Construct image object
-    const img = {
-      public_id: cloudinaryUpload.public_id,
-      url: cloudinaryUpload.secure_url,
-    };
-
-    // Create blog in database
-   const blog = await Blog.create({
-      title,
-      mainTitle,
-      content,
-      img: [img], // Assuming img is stored as an array of objects
-    });
-
-    // Send success response
-    res.status(201).send({
-      success: true,
-      message: "Blog created successfully",
-      blog
-    });
+    res.status(201).json(newBlog);
   } catch (error) {
-    console.error("Error creating blog:", error);
-    return res.status(500).send({
-      success: false,
-      message: "Error creating blog",
-    });
+    res.status(500).json({ message: 'Error creating blog post', error });
   }
 };
 
-export const deleteBlogController = async (req, res) => {
+// Get all blog posts
+exports.getBlogs = async (req, res) => {
+  try {
+    const blogs = await Blog.find();
+    res.status(200).json(blogs);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching blog posts', error });
+  }
+};
+
+// Get a single blog post by ID
+exports.getBlogById = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
-
-    // Validation
     if (!blog) {
-      return res.status(404).send({
-        success: false,
-        message: "Blog not found",
-      });
+      return res.status(404).json({ message: 'Blog post not found' });
     }
-
-    // Perform deletion
-    await blog.remove();
-
-    // Send success response
-    return res.status(200).send({
-      success: true,
-      message: "Blog deleted successfully",
-    });
+    res.status(200).json(blog);
   } catch (error) {
-    console.error("Error deleting blog:", error);
+    res.status(500).json({ message: 'Error fetching blog post', error });
+  }
+};
 
-    // Handle specific errors
-    if (error.name === "CastError") {
-      return res.status(400).send({
-        success: false,
-        message: "Invalid Blog ID",
-      });
+// Update a blog post by ID
+exports.updateBlog = async (req, res) => {
+  try {
+    const { title, mainTitle, content } = req.body;
+    const img = req.file ? req.file.path : req.body.img;
+
+    const blog = await Blog.findByIdAndUpdate(
+      req.params.id,
+      { title, mainTitle, content, img },
+      { new: true }
+    );
+
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog post not found' });
     }
 
-    // General error handling
-    return res.status(500).send({
-      success: false,
-      message: "Error deleting blog",
-      error: error.message,
-    });
+    res.status(200).json(blog);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating blog post', error });
+  }
+};
+
+// Delete a blog post by ID
+exports.deleteBlog = async (req, res) => {
+  try {
+    const blog = await Blog.findByIdAndDelete(req.params.id);
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog post not found' });
+    }
+    res.status(200).json({ message: 'Blog post deleted' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting blog post', error });
   }
 };

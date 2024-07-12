@@ -1,122 +1,89 @@
-import cloudinary from "cloudinary";
-import { getDataUri } from "../utils/feature.js";
-import {Product} from "../model/productModel.js"
+// // controllers/productController.js
+// const Product = require("../model/productModel.js")
+// const cloudinary = required("../config/cloudinaryConfig.js")
 
 
-export const getAllProductsController = async (req, res) => {
-    try {
-        const products = await Product.find();
+// // Create a new product
+// exports.createProduct = async (req, res) => {
+//   try {
+//     const { title, price, category } = req.body;
+//     const img = req.file.path;
 
-        if (!products) {
-            return res.status(404).send({
-                success: false,
-                message: "No products found"
-            });
-        }
+//     // Upload image to Cloudinary
+//     const result = await cloudinary.uploader.upload(img);
 
-        return res.status(200).send({
-            success: true,
-            message: "Products fetched successfully",
-            products
-        });
-    } catch (error) {
-        console.error("Error fetching products:", error);
+//     // Construct image URL from Cloudinary response
+//     const imgURL = result.secure_url;
 
-        return res.status(500).send({
-            success: false,
-            message: "Error fetching products"
-        });
-    }
-};
+//     const newProduct = new Product({ title, price, category, img: imgURL });
+//     await newProduct.save();
 
-export const createProductController = async (req, res) => {
-    const { title, price, category } = req.body;
+//     res.status(201).json(newProduct);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error creating product', error });
+//   }
+// };
 
-    try {
-        // Validation
-        if (!title || !price || !category) {
-            return res.status(400).send({
-                success: false,
-                message: "Please provide all fields"
-            });
-        }
+// // Get all products
+// exports.getAllProducts = async (req, res) => {
+//   try {
+//     const products = await Product.find();
+//     res.status(200).json(products);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error fetching products', error });
+//   }
+// };
 
-        if (!req.file) {
-            return res.status(400).send({
-                success: false,
-                message: "Please provide product image"
-            });
-        }
+// // Get a single product by ID
+// exports.getProductById = async (req, res) => {
+//   try {
+//     const product = await Product.findById(req.params.id);
+//     if (!product) {
+//       return res.status(404).json({ message: 'Product not found' });
+//     }
+//     res.status(200).json(product);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error fetching product', error });
+//   }
+// };
 
-        // Convert file to Data URI
-        const fileDataUri = getDataUri(req.file);
+// // Update a product by ID
+// exports.updateProductById = async (req, res) => {
+//   try {
+//     const { title, price, category } = req.body;
+//     let img = req.body.img;
 
-        // Upload image to Cloudinary
-        const cloudinaryUpload = await cloudinary.v2.uploader.upload(fileDataUri.content);
+//     if (req.file) {
+//       // Upload new image to Cloudinary
+//       const result = await cloudinary.uploader.upload(req.file.path);
+//       img = result.secure_url;
+//     }
 
-        // Construct image object
-        const img = {
-            public_id: cloudinaryUpload.public_id,
-            url: cloudinaryUpload.secure_url,
-        };
+//     const product = await Product.findByIdAndUpdate(
+//       req.params.id,
+//       { title, price, category, img },
+//       { new: true }
+//     );
 
-        // Create product in DB
-        const product = await Product.create({
-            title,
-            price,
-            category,
-            img: [img]
-        });
+//     if (!product) {
+//       return res.status(404).json({ message: 'Product not found' });
+//     }
 
-        return res.status(201).send({
-            success: true,
-            message: "Product created successfully",
-            product
-        });
-    } catch (error) {
-        console.log("Error creating product:", error);
-        return res.status(500).send({
-            success: false,
-            message: "Error creating product"
-        });
-    }
-};
+//     res.status(200).json(product);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error updating product', error });
+//   }
+// };
 
-
-
-
-// delete single product controller
-export const deleteProductController = async (req, res) => {
-    const {id} = req.prams;
-
-    try {
-        const product = await Product.findById(req.prams.id);
-
-        // validaiton
-        if(!product) {
-            return res.status(404).send({
-                success: false,
-                message: "Product not found"
-            })
-        }
-           // perform deletion
-           await product.remove();
-    }catch (error) {
-        console.error("Error deleting blog:", error);
-    
-        // Handle specific errors
-        if (error.name === "CastError") {
-          return res.status(400).send({
-            success: false,
-            message: "Invalid Product ID",
-          });
-        }
-    
-        // General error handling
-        return res.status(500).send({
-          success: false,
-          message: "Error deleting blog",
-          error: error.message,
-        });
-      }
-} 
+// // Delete a product by ID
+// exports.deleteProductById = async (req, res) => {
+//   try {
+//     const product = await Product.findByIdAndDelete(req.params.id);
+//     if (!product) {
+//       return res.status(404).json({ message: 'Product not found' });
+//     }
+//     res.status(200).json({ message: 'Product deleted' });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error deleting product', error });
+//   }
+// };
