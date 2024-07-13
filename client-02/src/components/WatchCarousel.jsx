@@ -8,8 +8,10 @@ import {
 } from '@/components/ui/carousel';
 import { Link } from 'react-router-dom';
 
-const WatchCarousel = () => {
-  const products = useCartStore((state) => state.products).filter(product => product.category === "watch");
+const WatchCarousel = ({products}) => {
+
+
+
   const [currentPage, setCurrentPage] = useState(0);
   const visibleCards = 5; // Always show 5 cards
   const carouselRef = useRef(null);

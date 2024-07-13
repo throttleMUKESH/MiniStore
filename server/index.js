@@ -1,42 +1,34 @@
 const express = require('express');
-const cors = require('cors');
+const mongoose = require('mongoose');
+const blogRoutes = require('./routes/blogRoutes.js');
+const productRoutes = require("./routes/productRoutes.js")
+const userRoutes = require("./routes/userRoutes.js")
 const dotenv = require('dotenv');
-const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-const cloudinary = require('cloudinary').v2;
-// const userRoutes = require('./routes/userRoutes.js');
-const blogRoute = require("./routes/blogRoute.js")
-// const productRoutes = require('./routes/productRoutes.js');
-const connectDB = require("./config/db.js")
 
-// Load environment variables
+
 dotenv.config();
 
-// Connect to MongoDB
-connectDB();
-
-dote
-
 const app = express();
-const PORT = process.env.PORT || 8080;
 
-// Global middleware
-app.use(morgan("dev"));
 app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+// Use blog routes
+app.use('/api', blogRoutes);
+app.use('/api', productRoutes);
+app.use('/api', userRoutes);
 
-// Routes
-// app.use("/api/v1/user", userRoutes);
-app.use("/api/v1/blog", blogRoute);
-// app.use("/api/v1/product", productRoute);
-
-// Test route
-app.get("/", (req, res) => {
-    res.status(200).send("<h1>It's a test route</h1>");
-});
-
-// Listen
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
-});
+const PORT = process.env.PORT || 5000;
+const MONGO_URI = process.env.MONGO_URI;
+console.log("apikey", process.env.CLOUDINARY_API_KEY )
+mongoose.connect(MONGO_URI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+  });

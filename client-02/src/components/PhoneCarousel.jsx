@@ -1,15 +1,9 @@
-import  {React, useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ProductCard from '@/components/ProductCard';
-import useCartStore from '../store/useCartStore';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem
-} from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { Link } from 'react-router-dom';
 
-const PhoneCarousel = () => {
-  const products = useCartStore((state) => state.products).filter(product => product.category === "phone");
+const PhoneCarousel = ({ products }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [visibleCards, setVisibleCards] = useState(1);
   const carouselRef = useRef(null);
@@ -17,11 +11,11 @@ const PhoneCarousel = () => {
   useEffect(() => {
     const updateVisibleCards = () => {
       const width = window.innerWidth;
-      if (width >= 1024) { // Large screens
+      if (width >= 1024) {
         setVisibleCards(4);
-      } else if (width >= 768) { // Medium screens
+      } else if (width >= 768) {
         setVisibleCards(2);
-      } else { // Small screens
+      } else {
         setVisibleCards(1);
       }
     };
@@ -42,12 +36,6 @@ const PhoneCarousel = () => {
         const currentScroll = carousel.scrollLeft;
         const newIndex = Math.round((currentScroll / totalWidth) * (products.length - visibleCards));
         setCurrentPage(Math.floor(newIndex / visibleCards));
-
-        // Debugging logs
-        console.log(`Current Scroll: ${currentScroll}`);
-        console.log(`Total Width: ${totalWidth}`);
-        console.log(`New Index: ${newIndex}`);
-        console.log(`Current Page: ${Math.floor(newIndex / visibleCards)}`);
       }
     };
 
@@ -72,10 +60,10 @@ const PhoneCarousel = () => {
   return (
     <div className="relative w-full h-full mb-36">
       <div className='flex justify-between'>
-      <h1 className='text-4xl font-normal'>MOBILE PRODUCTS</h1>
-      <Link to="/shop" className="relative uppercase underline hover:no-underline">
-      Go to shop
-    </Link>
+        <h1 className='text-4xl font-normal'>MOBILE PRODUCTS</h1>
+        <Link to="/shop" className="relative uppercase underline hover:no-underline">
+          Go to shop
+        </Link>
       </div>
       <Carousel
         ref={carouselRef}
@@ -85,9 +73,9 @@ const PhoneCarousel = () => {
         className="w-full h-full"
       >
         <CarouselContent className="flex gap-2 md:gap-3 lg:gap-16">
-          {products.slice(0,5).map((product) => (
-            <CarouselItem 
-              key={product.id} 
+          {products.slice(0, 5).map((product) => (
+            <CarouselItem
+              key={product.id}
               className="flex-none w-full sm:w-1/2 md:w-1/4 lg:w-1/5"
             >
               <div className="p-1">

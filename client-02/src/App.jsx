@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./App.css";
 
@@ -15,11 +15,30 @@ import CheckoutPage from "./pages/CheckoutPage";
 
 import BlogPage from "./pages/BlogPage";
 import AllBlogsPage from "./pages/AllBlogsPage";
+import AddProductPage from "./pages/DashBoard";
 
 
 
 function App() {
-  const [count, setCount] = useState(0);
+  // const [products, setProducts] = useState([]);
+  // const [error, setError] = useState(null);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch('http://localhost:3001/api/get-products');
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       const data = await response.json();
+  //       setProducts(data);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
 
   return (
     <Router>
@@ -27,6 +46,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/dashboard" element={<AddProductPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/*" element={<PageNotFound />} />
         <Route path="/blog" element={<AllBlogsPage />} />
@@ -35,7 +55,18 @@ function App() {
   
       </Routes>
     </Router>
+    // <div>
+    //   <h1>Products</h1>
+    //   <ul>
+    //     {products.map(product => (
+    //       <li key={product.id}>
+    //         {product.title} - {product.price}
 
+    //       </li>
+    //     ))}
+    //   </ul>
+    //   {error && <p>Error: {error}</p>}
+    // </div>
 
    
   );

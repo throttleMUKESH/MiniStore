@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-import { IoMdSearch, IoMdArrowDropdown } from "react-icons/io";
-
-import { FaCartShopping } from "react-icons/fa6";
+import { IoMdSearch } from "react-icons/io";
+// import { FaCartShopping } from "react-icons/fa"; 
+import { IoCart } from "react-icons/io5";// Ensure correct import path
 import { CgProfile } from "react-icons/cg";
-import SideBar from "./SideBar";
-import PageBox from "./PageBox";
 import { Link } from "react-router-dom";
-
 import useCartStore from "../store/useCartStore";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,14 +13,43 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import PageBox from "./PageBox";
+import SideBar from "./SideBar";
 
 const Navbar = () => {
   const cartItems = useCartStore((state) => state.cart);
-
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
     setOpen(!open);
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Call the logout API
+      const response = await fetch('http://localhost:6000/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // You might need to include an authorization token if required
+          // 'Authorization': `Bearer ${token}`
+        },
+        // Optionally, include credentials: 'include' if cookies are used
+        // credentials: 'include',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      // Perform any additional logout logic (e.g., clearing local storage, etc.)
+      console.log('Logout successful');
+      
+      // Optionally redirect or perform other actions after logout
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Handle logout error state or show an error message
+    }
   };
 
   return (
@@ -44,34 +69,27 @@ const Navbar = () => {
             <h4 className="cursor-pointer">SALE</h4>
             <h4 className="cursor-pointer">BLOG</h4>
             <h4 className="flex cursor-pointer">
-              <h4>
-                {" "}
-                <PageBox />
-              </h4>
+              <h4> {" "} <PageBox /> </h4>
             </h4>
           </div>
           <div className="icons flex gap-1 md:gap-2 lg:gap-4 items-center">
             <Link to={"/shop"}>
               <IoMdSearch size={17} className="cursor-pointer" />
             </Link>
-
-            {
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <CgProfile size={17} className="cursor-pointer" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Logout</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            }
-
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <CgProfile size={17} className="cursor-pointer" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem><Link to={"/dashboard"}>Admin</Link></DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Link to={"/cart"} className="cursor-pointer">
               <div className="flex relative r">
-                <FaCartShopping size={17} className="cursor-pointer" />
+                <IoCart size={17} className="cursor-pointer" />
                 <span className="flex items-center justify-center text-red-500 h-4 w-4 mx-2 my-[-11px] rounded-full border-[1px] border-zinc-500 absolute font-bold">
                   {cartItems.length}
                 </span>
