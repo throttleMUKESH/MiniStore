@@ -16,6 +16,11 @@ import CheckoutPage from "./pages/CheckoutPage";
 import BlogPage from "./pages/BlogPage";
 import AllBlogsPage from "./pages/AllBlogsPage";
 import AddProductPage from "./pages/DashBoard";
+import ProductForm from "./components/dashboard/ProductForm";
+import Admin from "./components/dashboard/Admin";
+import Signup from "./auth/Signup";
+import Login from "./auth/Login";
+
 
 
 
@@ -44,10 +49,14 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/shop" element={<ShopPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/dashboard" element={<AddProductPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/addProduct" element={<ProductForm />} />
+        <Route path="/addProduct" element={<Admin />} />
         <Route path="/*" element={<PageNotFound />} />
         <Route path="/blog" element={<AllBlogsPage />} />
       

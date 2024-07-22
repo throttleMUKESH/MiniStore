@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { Button } from '../ui/button';
 import toast from 'react-hot-toast'; // Import toast from react-hot-toast
 
@@ -10,6 +11,8 @@ const ProductForm = () => {
     category: '',
     img: '',
   });
+
+  const navigate = useNavigate(); // Initialize navigate function
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -33,13 +36,16 @@ const ProductForm = () => {
       // Show toast notification
       toast.success('Product added successfully');
 
-      // Optionally, you can clear the form fields after successful submission
+      // Clear the form fields after successful submission
       setFormData({
         title: '',
         price: 0,
         category: '',
         img: '',
       });
+
+      // Navigate to /admin route
+      navigate('/admin');
 
     } catch (error) {
       console.error('Error adding product:', error);
@@ -49,57 +55,57 @@ const ProductForm = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Add New Product</h2>
+    <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg">
+      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Add New Product</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Title:</label>
+        <div className="mb-6">
+          <label className="block text-lg font-medium text-gray-700">Title:</label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-700"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Price:</label>
+        <div className="mb-6">
+          <label className="block text-lg font-medium text-gray-700">Price:</label>
           <input
             type="number"
             name="price"
             value={formData.price}
             onChange={handleChange}
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-700"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Category:</label>
+        <div className="mb-6">
+          <label className="block text-lg font-medium text-gray-700">Category:</label>
           <input
             type="text"
             name="category"
             value={formData.category}
             onChange={handleChange}
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-700"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Image:</label>
+        <div className="mb-6">
+          <label className="block text-lg font-medium text-gray-700">Image:</label>
           <input
             type="file"
             name="img"
             onChange={handleChange}
             required
-            className="mt-1 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+            className="mt-2 block w-full text-gray-700 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
           />
         </div>
 
         <Button
           type="submit"
           variant="outline"
-          className="bg-sky-500 hover:bg-sky-400"
+          className="lg:w-1/3 bg-sky-500 hover:bg-sky-400 text-white font-bold py-2 px-4 rounded-md transition duration-200"
         >
           Add Product
         </Button>

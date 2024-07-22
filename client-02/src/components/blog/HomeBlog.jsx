@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import blogData from "../../constants/blogData";
+import blogData from "../../../constants/blogData";
 
 const HomeBlog = () => {
   // Simulating fetching blog data

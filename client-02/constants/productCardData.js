@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import useCartStore from '../store/useCartStore';
+import useCartStore from '../src/store/useCartStore';
 
 const Card = ({ product }) => {
   const [hovered, setHovered] = useState(false);

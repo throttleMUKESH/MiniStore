@@ -20,13 +20,22 @@ const PageBox = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="  bg-[#EDF1F3]">
         <DropdownMenuItem>ABOUT</DropdownMenuItem>
-        <DropdownMenuItem>BLOG</DropdownMenuItem>
-        <DropdownMenuItem><Link to={"/shop"}>SHOP</Link></DropdownMenuItem>
-        <DropdownMenuItem><Link to={"/cart"}>CART</Link></DropdownMenuItem>
-        <DropdownMenuItem><Link to={"/checkout"}>CHECKOUT</Link></DropdownMenuItem>
-        <DropdownMenuItem>SINGLE POST</DropdownMenuItem>
-        <DropdownMenuItem>SINGLE PRODUCT</DropdownMenuItem>
-        <DropdownMenuItem>CONTACT</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to={"/blog"}>BLOG</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to={"/shop"}>SHOP</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to={"/cart"}>CART</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to={"/checkout"}>CHECKOUT</Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem>
+          <Link to={"/contact"}>CONTACT</Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

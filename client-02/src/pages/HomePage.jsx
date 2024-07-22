@@ -1,8 +1,7 @@
-import { motion } from "framer-motion";
+import React, { useEffect, useState, useRef } from "react";
 import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/NavBar";
 import Service from "@/components/service/Service";
-import React, { useEffect, useState } from "react";
 import BannerCarousel from "@/components/BannerCarousel";
 import PhoneCarousel from "@/components/PhoneCarousel";
 import WatchCarousel from "@/components/WatchCarousel";
@@ -14,6 +13,13 @@ import useCartStore from "@/store/useCartStore";
 const HomePage = () => {
   const { products, fetchProducts } = useCartStore();
   const [error, setError] = useState(null);
+
+  // Define refs for sections
+  const section1Ref = useRef(null);
+  const section2Ref = useRef(null);
+  const section3Ref = useRef(null);
+  const section4Ref = useRef(null);
+  const section5Ref = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,57 +36,42 @@ const HomePage = () => {
   const phoneProducts = products.filter(product => product.category === 'phone');
   const watchProducts = products.filter(product => product.category === 'watch');
 
-  const pageVariants = {
-    initial: {
-      opacity: 0,
-      y: "-100vh",
-    },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeInOut",
-      },
-    },
+  const scrollToSection = (ref) => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
-    <motion.div
-      initial="initial"
-      animate="animate"
-      variants={pageVariants}
-      className="overflow-hidden"
-    >
-      <Navbar />
-      <motion.div variants={pageVariants}>
+    <>
+      <Navbar 
+        scrollToSection={() => scrollToSection(section1Ref)}
+        scrollToSection2={() => scrollToSection(section2Ref)}
+        scrollToSection3={() => scrollToSection(section3Ref)}
+        scrollToSection4={() => scrollToSection(section4Ref)}
+        scrollToSection5={() => scrollToSection(section5Ref)}
+      />
+      <div ref={section1Ref}>
         <BannerCarousel />
-      </motion.div>
-      <motion.div variants={pageVariants}>
+      </div>
+      <div ref={section2Ref}>
         <Service />
-      </motion.div>
-      <motion.div variants={pageVariants}>
+      </div>
+      <div ref={section3Ref}>
         <PhoneCarousel products={phoneProducts} />
-      </motion.div>
-      <motion.div variants={pageVariants}>
+      </div>
+      <div ref={section4Ref}>
         <WatchCarousel products={watchProducts} />
-      </motion.div>
-      <motion.div variants={pageVariants}>
+      </div>
+      <div ref={section5Ref}>
         <Blog />
-      </motion.div>
-      <motion.div variants={pageVariants}>
-        <TextCarousel />
-      </motion.div>
-      <motion.div variants={pageVariants}>
-        <ShopOurInsta />
-      </motion.div>
-      <motion.div variants={pageVariants}>
-        <Footer />
-      </motion.div>
+      </div>
+      <TextCarousel />
+      <ShopOurInsta />
+      <Footer />
       {error && <p>Error: {error}</p>}
-    </motion.div>
+    </>
   );
 };
 
 export default HomePage;
-``

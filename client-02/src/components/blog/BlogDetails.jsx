@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import blogData from "../../constants/blogData";
+import blogData from "../../../constants/blogData";
 
 const BlogDetails = () => {
   const { id } = useParams();
